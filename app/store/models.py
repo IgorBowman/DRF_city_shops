@@ -25,7 +25,7 @@ class Store(models.Model):
     city = models.ForeignKey(
         'City',
         related_name='cities',
-        on_delete=models.SET_NULL
+        on_delete=models.CASCADE
     )
     street = models.ForeignKey(
         'Street',
