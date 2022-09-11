@@ -28,7 +28,16 @@ class Shop(APIView):
     """Get shops"""
 
     def get(self, request):
-        #shops = Store.objects.all().prefetch_related('cities').prefetch_related('streets')
-        shops = Store.objects.all()
+        city = request.GET.get('city')
+        street = request.GET.get('street')
+        # open = request.GET.get('open') # 1/0
+        if street is not None:
+            shops = Store.objects.filter(street=street).all()
+        elif city is not None:
+            shops = Store.objects.filter(city=city).all()
+        elif city and street is not None:
+            shops = Store.objects.filter(city=city).filter(street=street).all()
+        else:
+            shops = Store.objects.all()
         serializer = StoreSerializer(shops, many=True)
         return Response({'data': serializer.data})
