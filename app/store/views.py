@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import CitySerializer, CityStreetSerializer, StoreSerializer
+from .serializers import CitySerializer, CityStreetSerializer, StoreSerializer, StorePostSerializer
 from .models import Store, Street, City
 
 
@@ -30,7 +30,6 @@ class Shop(APIView):
     def get(self, request):
         city = request.GET.get('city')
         street = request.GET.get('street')
-        # open = request.GET.get('open') # 1/0
         if street is not None:
             shops = Store.objects.filter(street=street).all()
         elif city is not None:
@@ -41,3 +40,15 @@ class Shop(APIView):
             shops = Store.objects.all()
         serializer = StoreSerializer(shops, many=True)
         return Response({'data': serializer.data})
+
+    def post(self, request, *args):
+        shop = StorePostSerializer(data=request.data)
+        if shop.is_valid():
+            try:
+                print(request.data)
+                obj = shop.save()
+                return Response({'status': 'OK'}, obj.id)
+            except ValueError:
+                return Response({'status': 'Incorrect data'})
+        else:
+            return Response({'status': 'Incorrect data'})
