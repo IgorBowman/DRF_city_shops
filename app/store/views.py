@@ -30,6 +30,7 @@ class Shop(APIView):
     def get(self, request):
         city = request.GET.get('city')
         street = request.GET.get('street')
+        # open = request.GET.get('open') # 1/0
         if street is not None:
             shops = Store.objects.filter(street=street).all()
         elif city is not None:
@@ -46,9 +47,18 @@ class Shop(APIView):
         if shop.is_valid():
             try:
                 print(request.data)
+                #obj = shop.save(street=request.street, city=request.city)
                 obj = shop.save()
-                return Response({'status': 'OK'}, obj.id)
+                print(f"Айди записи: {obj.id}")
+                return Response({'status': 'OK'}, obj.pk)  # вернуть id записи?
             except ValueError:
-                return Response({'status': 'Incorrect data'})
+                return Response({'status': 'Что-то сломалось'})
         else:
-            return Response({'status': 'Incorrect data'})
+            return Response({'status': 'Невалидные данные'})
+
+    # def post(self, request, *args):
+    #     shop = StorePostSerializer(data=request.data)
+    #     if shop.is_valid():
+    #         return Response({'status': 'OK'})  # вернуть id записи?
+    #     else:
+    #         return Response({'status': 'Невалидные данные'})
