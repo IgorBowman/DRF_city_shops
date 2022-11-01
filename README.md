@@ -1,15 +1,15 @@
 # Запуск:
-###1) Создание окружения
+##1) Создание окружения
 ```
 pip unstall virtualenv
 python -m venv venv (Если Mac или linux python3 -m venv venv)
 .\venv\Scripts\activate
 ```
-###2) Установка нужных пакетов
+##2) Установка нужных пакетов
 ```
 pip install -r requirements.txt
 ```
-###3) Запуск программы
+##3) Запуск программы
 ```
 python main.py (Если Mac или linux python3 main.py)
 ```
